@@ -9,13 +9,6 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = '__all__'
 
-    def create(self, validated_data):
-        order = Order(
-            user=validated_data['user'],
-        )
-
-        return order
-
 
 class OrderItemSerializer(serializers.ModelSerializer):
     price = SerializerMethodField()
@@ -24,6 +17,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
         fields = ['order', 'product', 'total', 'price', 'item_name']
+
 
     def get_price(self, obj):
         return obj.product.price
@@ -43,6 +37,10 @@ class DetailOrderSerializer(serializers.ModelSerializer):
         items = OrderItem.objects.filter(order=obj)
         items_serializer = OrderItemSerializer(items, many=True)
         return items_serializer.data
+    # def get_payment_details(self, obj):
+    #     payment_details = PaymentDetails.objects.filter(order=obj)
+    #     payment_details_serializer = PaymentDetailsSerializer(payment_details)
+    #     return payment_details_serializer.data
 
 
 class PaymentDetailsSerializer(serializers.ModelSerializer):

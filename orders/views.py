@@ -1,12 +1,10 @@
-from django.shortcuts import render
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
-from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .models import Order, OrderItem, PaymentDetails
-from rest_framework import generics
-from .serializers import OrderSerializer, OrderItemSerializer, DetailOrderSerializer
+from .models import Order, OrderItem
+from .serializers import OrderSerializer, DetailOrderSerializer
+from products.models import Product
 
 
 # Create your views here.
@@ -25,7 +23,23 @@ def all_orders(request):
 @authentication_classes((TokenAuthentication, BasicAuthentication, SessionAuthentication))
 @permission_classes([IsAuthenticated])
 def order_details(request, order_id):
-    order = Order.objects.get(id=order_id)
+    if request.method == 'GET':
+        order = Order.objects.get(id=order_id)
 
-    order_serializer = DetailOrderSerializer(order)
-    return Response({'Order': order_serializer.data })
+        order_serializer = DetailOrderSerializer(order)
+        return Response({'Order': order_serializer.data})
+
+
+@api_view(['POST'])
+@authentication_classes((TokenAuthentication, BasicAuthentication, SessionAuthentication))
+@permission_classes([IsAuthenticated])
+def add_order(request):
+    if request.method == 'POST':
+        user = request.user
+        order = Order.objects.create(user=user)
+        for i in request.data['items']:
+            OrderItem.objects.create(order=order, product=Product.objects.get(id=i['product_id']), total=i['total'])
+
+        order_serializer = DetailOrderSerializer(order)
+        return Response({'Order': order_serializer.data})
+
