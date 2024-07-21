@@ -12,6 +12,7 @@ class OrderSerializer(serializers.ModelSerializer):
         order = Order(
             user=validated_data['user'],
         )
+
         return order
 
 
