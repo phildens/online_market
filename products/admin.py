@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Product, Category, SubCategory
+from .models import Product
 
 
-@admin.register(Product, Category, SubCategory)
+@admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     pass
