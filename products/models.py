@@ -10,10 +10,10 @@ class Category(models.Model):
 
 class SubCategory(models.Model):
     name = models.CharField(max_length=50)
-    Category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}, {self.category}"
 
 
 class Product(models.Model):
@@ -27,4 +27,4 @@ class Product(models.Model):
     full_description = models.CharField(max_length=2000)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}, id: {self.id}"

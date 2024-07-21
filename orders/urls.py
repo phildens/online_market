@@ -2,6 +2,6 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path(''),
-    path('allorders/')
+    path('', checkout, name='checkout'),
+
 ]
