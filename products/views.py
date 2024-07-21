@@ -1,6 +1,4 @@
 from rest_framework import generics
-from rest_framework.response import Response
-
 from products.models import Product
 from products.serializers import ProductListSerializer, ProductFullSerializer
 
