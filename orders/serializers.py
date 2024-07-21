@@ -18,9 +18,18 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    price = SerializerMethodField()
+    item_name = SerializerMethodField()
+
     class Meta:
         model = OrderItem
-        fields = '__all__'
+        fields = ['order', 'product', 'total', 'price', 'item_name']
+
+    def get_price(self, obj):
+        return obj.product.price
+
+    def get_item_name(self, obj):
+        return obj.product.name
 
 
 class DetailOrderSerializer(serializers.ModelSerializer):
