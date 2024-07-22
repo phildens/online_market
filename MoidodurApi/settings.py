@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'user_buyer',
     'orders',
     'category',
+    'resetpassword'
 ]
 
 MIDDLEWARE = [

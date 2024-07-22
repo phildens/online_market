@@ -26,4 +26,6 @@ urlpatterns = [
     path('api/v1/', include('user_buyer.urls')),
     path('api/v1/orders/', include('orders.urls')),
     path('api/v1/categoties/', include('category.urls')),
+    path('api/v1/resetpass/', include('resetpassword.urls')),
+
 ]
