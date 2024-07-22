@@ -30,7 +30,7 @@ def user_login(request):
             try:
                 user = CustomUser.objects.get(email=username)
             except ObjectDoesNotExist:
-                pass
+                return Response({'error': 'Username not found'}, status=status.HTTP_400_BAD_REQUEST)
 
         if not user:
             user = authenticate(username=username, password=password)
@@ -40,6 +40,7 @@ def user_login(request):
             return Response({'token': token.key}, status=status.HTTP_200_OK)
 
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -51,3 +52,4 @@ def user_logout(request):
             return Response({'message': 'Successfully logged out.'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
