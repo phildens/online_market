@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
@@ -14,7 +15,10 @@ from products.models import Product
 def all_orders(request):
     if request.method == 'GET':
         user = request.user
-        order_list = Order.objects.filter(user=user)
+        try:
+            order_list = Order.objects.filter(user=user)
+        except Order.DoesNotExist:
+            return Response({'error': 'Orders not found'},status=status.HTTP_404_NOT_FOUND)
         order_serializer = OrderSerializer(order_list, many=True)
         return Response({'Orders': order_serializer.data})
 
@@ -24,7 +28,10 @@ def all_orders(request):
 @permission_classes([IsAuthenticated])
 def order_details(request, order_id):
     if request.method == 'GET':
-        order = Order.objects.get(id=order_id)
+        try:
+            order = Order.objects.get(id=order_id)
+        except Order.DoesNotExist:
+            return Response({'Order': 'Order not found'},status=status.HTTP_404_NOT_FOUND)
 
         order_serializer = DetailOrderSerializer(order)
         return Response({'Order': order_serializer.data})
