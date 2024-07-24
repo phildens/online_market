@@ -118,6 +118,7 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'user_buyer.CustomUser'
 REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],

@@ -4,7 +4,7 @@ from email.mime.text import MIMEText
 from email.header import Header
 import random
 
-from resetpassword.mail_information import login, password
+from resetpassword.mail_information import login, password, test_mail
 
 
 def send_reset_mail(to: str):
@@ -33,7 +33,7 @@ def randomword():
 
 
 def main():
-    send_reset_mail(to='vborodulin67@gmail.com')
+    send_reset_mail(to=test_mail)
 
 
 if __name__ == '__main__':
